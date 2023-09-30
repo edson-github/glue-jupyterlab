@@ -77,7 +77,8 @@ def test_links(yglue_doc_links, identity_link):
         assert all(item in link.keys() for item in required)
         assert type(link["cids1"]) == list
         assert all(
-            [type(link[key]) == value_type for key, value_type in zip(required, types)]
+            type(link[key]) == value_type
+            for key, value_type in zip(required, types)
         )
 
     ## Fake editing of the y structure

@@ -73,23 +73,17 @@ def get_advanced_links():
             )
 
     # Reordering the dict
-    categories = ["General"] + sorted(set(advanced_links.keys()) - set(["General"]))
-    advanced_links = {k: advanced_links[k] for k in categories}
-    return advanced_links
+    categories = ["General"] + sorted(set(advanced_links.keys()) - {"General"})
+    return {k: advanced_links[k] for k in categories}
 
 
 def nested_compare(value1, value2):
     # Compare lists
     if isinstance(value1, list) and isinstance(value2, list):
-        if not len(value1) == len(value2):
+        if len(value1) != len(value2):
             return False
 
-        for v1, v2 in zip(value1, value2):
-            if not nested_compare(v1, v2):
-                return False
-
-        return True
-
+        return all(nested_compare(v1, v2) for v1, v2 in zip(value1, value2))
     # Compare dict
     if isinstance(value1, dict) and isinstance(value2, dict):
         for k1, v1 in value1.items():

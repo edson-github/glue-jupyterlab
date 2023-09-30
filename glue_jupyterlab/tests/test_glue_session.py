@@ -83,7 +83,7 @@ def test_add_data(yglue_session):
 
     # Compare the DataCollection
     for key, value in contents["DataCollection"].items():
-        if key == "data" or key == "cids" or key == "components":
+        if key in ["data", "cids", "components"]:
             assert not nested_compare(value, updated_contents["DataCollection"][key])
         else:
             assert nested_compare(value, updated_contents["DataCollection"][key])

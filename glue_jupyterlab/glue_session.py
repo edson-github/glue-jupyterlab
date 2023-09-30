@@ -130,11 +130,7 @@ class SharedGlueSession:
 
                 view_type, state = self._read_view_state(tab_name, viewer_id)
                 data_name = state.get("layer", None)
-                if data_name is not None:
-                    data = self._data.get(data_name, None)
-                else:
-                    data = None
-
+                data = self._data.get(data_name, None) if data_name is not None else None
                 if saved_viewer is not None:
                     if saved_viewer["widget"] is not None:
                         continue
@@ -439,8 +435,7 @@ class SharedGlueSession:
                     and link_desc.get("using", {}).get("function", None)
                     == IDENTITY_LINK_FUNCTION
                 ):
-                    link = self._get_identity_link(link_desc)
-                    if link:
+                    if link := self._get_identity_link(link_desc):
                         self.app.data_collection.remove_link(link)
 
     def _get_identity_link(self, link_desc: Dict) -> Optional[LinkSame]:
@@ -455,7 +450,7 @@ class SharedGlueSession:
         ]
         links = self.app.data_collection.external_links
         for link in links:
-            if not link.display == "identity link":
+            if link.display != "identity link":
                 continue
             link_lst = [
                 link.data1.label,
@@ -463,7 +458,7 @@ class SharedGlueSession:
                 [str(id) for id in link.cids2],
                 link.data2.label,
             ]
-            if desc_lst == link_lst or desc_lst == link_lst[::-1]:
+            if desc_lst in [link_lst, link_lst[::-1]]:
                 return link
         return None
 
