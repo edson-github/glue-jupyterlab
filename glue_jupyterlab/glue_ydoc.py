@@ -103,9 +103,9 @@ class YGlue(YBaseDoc):
         viewers = contents.get("__main__", {}).get("viewers", [])
         tabs: Dict[str, Y.YMap] = {}
         for idx, tab in enumerate(tab_names):
-            items: Dict[str, Y.YMap] = {}
-            for viewer in viewers[idx]:
-                items[viewer] = contents.get(viewer, {})
+            items: Dict[str, Y.YMap] = {
+                viewer: contents.get(viewer, {}) for viewer in viewers[idx]
+            }
             tabs[tab] = Y.YMap(items)
 
         self._data_collection_name: str = contents.get("__main__", {}).get("data", "")
